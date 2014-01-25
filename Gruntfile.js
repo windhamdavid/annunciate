@@ -81,13 +81,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
     grunt.loadNpmTasks('grunt-contrib-watch');
-	
-    grunt.registerTask('default', [
-      'uglify',
-      'version',
-	  'watch'
-    ]);
-	
+
     grunt.registerTask('dev', [
       'watch'
     ]);
