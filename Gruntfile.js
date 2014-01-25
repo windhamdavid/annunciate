@@ -1,24 +1,25 @@
 'use strict';
 module.exports = function(grunt) {
- 
-    // load all grunt tasks
-    require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
- 
+
+    require('load-grunt-tasks')(grunt);
+
     grunt.initConfig({
- 
+
         watch: {
-            options: {
-                livereload: true,
+            compass: {
+                files: ['assets/scss/**/*.{scss,sass}'],
+                tasks: ['compass']
             },
             js: {
                 files: '<%= jshint.all %>',
                 tasks: ['jshint', 'uglify']
             },
             livereload: {
-                files: ['*.html', '*.php', 'assets/img``/**/*.{png,jpg,jpeg,gif,webp,svg}']
+                options: { livereload: true },
+                files: ['style.css', 'assets/js/*.js', '*.html', '*.php', 'assets/images/**/*.{png,jpg,jpeg,gif,webp,svg}']
             }
         },
- 
+
         compass: {
             dist: {
                 options: {
@@ -27,63 +28,57 @@ module.exports = function(grunt) {
                 }
             }
         },
- 
+
         jshint: {
             options: {
                 jshintrc: '.jshintrc',
-                "force": true
+                'force': true
             },
-         all: [
+            all: [
                 'Gruntfile.js',
                 'assets/js/source/**/*.js'
             ]
         },
- 
+
         uglify: {
-            dist: {
+            plugins: {
                 options: {
-                    sourceMap: 'assets/js/map/source-map.js'
+                    sourceMap: 'assets/js/plugins.js.map',
+                    sourceMappingURL: 'plugins.js.map',
+                    sourceMapPrefix: 2
                 },
                 files: {
                     'assets/js/plugins.min.js': [
                         'assets/js/source/plugins.js',
-                        'assets/js/vendor/**/*.js',
-                        '!assets/js/vendor/modernizr*.js'
-                    ],
+                        // 'assets/js/vendor/yourplugin/yourplugin.js',
+                    ]
+                }
+            },
+            main: {
+                options: {
+                    sourceMap: 'assets/js/main.js.map',
+                    sourceMappingURL: 'main.js.map',
+                    sourceMapPrefix: 2
+                },
+                files: {
                     'assets/js/main.min.js': [
                         'assets/js/source/main.js'
                     ]
                 }
             }
         },
-		
-        rsync: {
-            options: {
-                exclude: ['.git*', '.DS_Store*', '._*', '.Spotlight*', '.Trashes*', '*thumbs.db*'],
-                recursive: true,
-                spawn: false,
-                syncDestIgnoreExcl: true
-            }
-        }
-		
-        phpunit: {
+
+		phpunit: {
             all: {
                 dir: 'tests/phpunit/'
             }
         },
- 
+
     });
+	
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.registerTask('default', ['watch']);
 
-	grunt.loadTasks('tasks');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-contrib-sass');
-	grunt.loadNpmTasks( 'grunt-contrib-clean' );
-    grunt.loadNpmTasks('grunt-contrib-watch');
-
-    grunt.registerTask('dev', [
-      'watch'
-    ]);
- 
 };
