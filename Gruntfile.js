@@ -6,7 +6,6 @@ module.exports = function(grunt) {
  
     grunt.initConfig({
  
-        // watch for changes and trigger compass, jshint, uglify and livereload
         watch: {
             options: {
                 livereload: true,
@@ -20,7 +19,6 @@ module.exports = function(grunt) {
             }
         },
  
-        // compass and scss
         compass: {
             dist: {
                 options: {
@@ -30,19 +28,17 @@ module.exports = function(grunt) {
             }
         },
  
-        // javascript linting with jshint
         jshint: {
             options: {
                 jshintrc: '.jshintrc',
                 "force": true
             },
-            all: [
+         all: [
                 'Gruntfile.js',
                 'assets/js/source/**/*.js'
             ]
         },
  
-        // uglify to concat, minify, and make source maps
         uglify: {
             dist: {
                 options: {
@@ -59,14 +55,38 @@ module.exports = function(grunt) {
                     ]
                 }
             }
+        },
+		
+        rsync: {
+            options: {
+                exclude: ['.git*', '.DS_Store*', '._*', '.Spotlight*', '.Trashes*', '*thumbs.db*'],
+                recursive: true,
+                spawn: false,
+                syncDestIgnoreExcl: true
+            }
         }
+		
+        phpunit: {
+            all: {
+                dir: 'tests/phpunit/'
+            }
+        },
  
     });
- 
-    // rename tasks
-    grunt.renameTask('rsync', 'deploy');
- 
-    // register task
-    grunt.registerTask('default', ['watch']);
+
+	grunt.loadTasks('tasks');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+	
+    grunt.registerTask('default', [
+      'uglify',
+      'version',
+	  'watch'
+    ]);
+	
+    grunt.registerTask('dev', [
+      'watch'
+    ]);
  
 };
