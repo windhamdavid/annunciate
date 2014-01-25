@@ -11,10 +11,6 @@ module.exports = function(grunt) {
             options: {
                 livereload: true,
             },
-            compass: {
-                files: ['assets/scss/**/*.{scss,sass}'],
-                tasks: ['compass']
-            },
             js: {
                 files: '<%= jshint.all %>',
                 tasks: ['jshint', 'uglify']
@@ -62,42 +58,6 @@ module.exports = function(grunt) {
                         'assets/js/source/main.js'
                     ]
                 }
-            }
-        },
- 
-        // image optimization
-        imagemin: {
-            dist: {
-                options: {
-                    optimizationLevel: 7,
-                    progressive: true
-                },
-                files: [{
-                    expand: true,
-                    cwd: 'assets/images/',
-                    src: '**/*',
-                    dest: 'assets/images/'
-                }]
-            }
-        },
- 
-        // deploy via rsync
-        deploy: {
-            staging: {
-                src: "./",
-                dest: "~/path/to/theme",
-                host: "user@host.com",
-                recursive: true,
-                syncDest: true,
-                exclude: ['.git*', 'node_modules', '.sass-cache', 'Gruntfile.js', 'package.json', '.DS_Store', 'README.md', 'config.rb', '.jshintrc']
-            },
-            production: {
-                src: "./",
-                dest: "~/path/to/theme",
-                host: "user@host.com",
-                recursive: true,
-                syncDest: true,
-                exclude: '<%= rsync.staging.exclude %>'
             }
         }
  
