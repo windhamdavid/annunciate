@@ -1,9 +1,7 @@
 language: php
 
 php:
-  - 5.3
   - 5.4
-  - 5.5
 
 branches:
   except:
@@ -14,4 +12,3 @@ before_script:
   - npm install
   
 script: grunt test --verbose
-script: phpunit
